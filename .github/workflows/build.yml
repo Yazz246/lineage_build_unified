@@ -39,7 +39,5 @@ jobs:
          bash lineage_build_unified/buildbot_unified.sh treble 64GN         
       - uses: actions/upload-artifact@v4
         with:
-           
-           name: gsi
-           
-           path: los/release/**
+        name: gsi    
+        path: los/release/**
