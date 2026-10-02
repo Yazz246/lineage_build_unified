@@ -7,12 +7,13 @@ jobs:
     steps:
       - uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 4096
-          swap-size-mb: 8192
+          root-reserve-mb: 2048
+          swap-size-mb: 2048
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
           remove-codeql: 'true'
+          remove-docker-images: 'true'
       - name: Deps
         run: |
           sudo apt-get update
@@ -26,7 +27,8 @@ jobs:
         run: |
           export PATH=~/bin:$PATH
           mkdir los && cd los
-          repo init -u https://github.com/LineageOS/android.git -b lineage-20.0 --git-lfs
+          repo init -u https://github.com/LineageOS/android.git -b lineage-20.0 --depth=1 --git-lfs
+          repo sync -c -j4 --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
           git clone https://github.com/${{ github.repository_owner }}/lineage_build_unified -b lineage-20-td
           git clone https://github.com/${{ github.repository_owner }}/lineage_patches_unified -b lineage-20-td
           bash lineage_build_unified/buildbot_unified.sh treble 64GN
